@@ -3,7 +3,7 @@
 // ============================
 import { parseCsvFile } from "./parseCsv";
 
-const url = `${import.meta.env.BASE_URL}/csv/FiberPatchCablePrice.csv`;
+const url = `${import.meta.env.BASE_URL}csv/FiberPatchCablePrice.csv`;
 
 /** 取前 5 碼（大寫） */
 function prefix5(sku = "") {
