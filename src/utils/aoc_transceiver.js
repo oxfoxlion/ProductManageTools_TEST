@@ -3,7 +3,7 @@
 // ============================
 import { parseCsvFile } from "./parseCsv";
 
-const CSV_URL = "/csv/AOC_Transceiver.csv";
+const CSV_URL = `${import.meta.env.BASE_URL}/csv/AOC_Transceiver.csv`;
 
 /** 小工具：正規化表頭（去 BOM / NBSP / 異體 dash / 大小寫） */
 function normHeader(s = "") {

@@ -2,7 +2,7 @@
 import { parseCsvFile } from "./parseCsv";
 
 const EXCLUDE = new Set(["Length Spec", "SKU"]);
-const url = "/csv/MTPMPOPrice.csv";
+const url = `${import.meta.env.BASE_URL}/csv/MTPMPOPrice.csv`;
 
 // 長碼優先，避免 FFB 誤配 FFBA
 const sortDescLen = (a, b) => b.length - a.length || a.localeCompare(b);

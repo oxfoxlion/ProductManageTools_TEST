@@ -3,7 +3,7 @@
 // ============================
 import { parseCsvFile } from "./parseCsv";
 
-const url = "/csv/unibootPrice.csv";
+const url = `${import.meta.env.BASE_URL}/csv/unibootPrice.csv`;
 
 // 僅由表頭蒐集「系列代號」：XXXXX 與 XXXXX-NP
 function collectSeriesCodes(headers = []) {
