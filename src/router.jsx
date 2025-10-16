@@ -1,4 +1,5 @@
-import {createBrowserRouter } from "react-router-dom";
+// src/router.jsx
+import { createBrowserRouter } from "react-router-dom";
 
 import Frontend from "./layout/Frontend";
 import CreateProducts from "./pages/CreateProducts";
@@ -12,45 +13,27 @@ import UpdateVariants from "./pages/UpdateVariants";
 import DeleteTranslate from "./pages/deleteTranslate";
 import NotFound from "./pages/NotFound";
 
-export const route = createBrowserRouter ([
+export const route = createBrowserRouter(
+  [
     {
-        path:'/',
-        element:<Frontend></Frontend>,
-        children:[
-            {
-                index:true,
-                element:<CreateProducts></CreateProducts>
-            },{
-                path:'create_variants',
-                element:<CreateVariants></CreateVariants>
-            },{
-                path:'update_inventory',
-                element:<UpdateInventory></UpdateInventory>
-            },
-            {
-                path:'update_metafields',
-                element:<UpdateMetafields></UpdateMetafields>
-            },
-            {
-                path:'update_products',
-                element:<UpdateProducts></UpdateProducts>
-            },{
-                path:'update_relative_products',
-                element:<UpdateRelativeProducts></UpdateRelativeProducts>
-            },{
-                path:'update_translation',
-                element:<UpdateTranslation></UpdateTranslation>
-            },{
-                path:'update_variants',
-                element:<UpdateVariants></UpdateVariants>
-            },{
-                path:'delete_translate',
-                element:<DeleteTranslate></DeleteTranslate>
-            },{
-                path:'*',
-                element:<NotFound></NotFound>
-            }
-
-        ]
-    }
-])
+      path: "/",
+      element: <Frontend />,
+      children: [
+        { index: true, element: <CreateProducts /> },
+        { path: "create_variants", element: <CreateVariants /> },
+        { path: "update_inventory", element: <UpdateInventory /> },
+        { path: "update_metafields", element: <UpdateMetafields /> },
+        { path: "update_products", element: <UpdateProducts /> },
+        { path: "update_relative_products", element: <UpdateRelativeProducts /> },
+        { path: "update_translation", element: <UpdateTranslation /> },
+        { path: "update_variants", element: <UpdateVariants /> },
+        { path: "delete_translate", element: <DeleteTranslate /> },
+        { path: "*", element: <NotFound /> },
+      ],
+    },
+  ],
+  {
+    // 這行是關鍵：讓 / 代表 /ProductManageTools_TEST/（在 prod）
+    basename: import.meta.env.BASE_URL,
+  }
+);
