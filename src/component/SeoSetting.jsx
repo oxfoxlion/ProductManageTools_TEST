@@ -28,6 +28,15 @@ export default function SeoSetting({ currentRow, canEdit,isChecked,toggleSelecte
                         isChecked={isChecked(["Tags"])}
                         onToggle={toggleSelected}
                     />
+                    <CardContent
+                        row={currentRow}
+                        title="SEO Description"
+                        field="SEO Description"
+                        canEdit={canEdit}
+                        selectKeys={["SEO Description"]}
+                        isChecked={isChecked(["SEO Description"])}
+                        onToggle={toggleSelected}
+                    />
 
                 </div>
             </div>
