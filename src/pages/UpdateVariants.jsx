@@ -8,6 +8,7 @@ import Hero from "../component/Hero";
 import ConfirmPreviewModal from "../component/ConfirmPreviewModal";
 import { SECTION_ORDER, COLUMN_ORDER } from "../config/previewSections";
 
+import { useAuth } from "../auth/AuthContext";
 const API_BASE = "https://api.instantcheeseshao.com";
 
 export default function UpdateVariants() {

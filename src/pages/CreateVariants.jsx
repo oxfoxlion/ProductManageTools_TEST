@@ -8,9 +8,11 @@ import Hero from "../component/Hero";
 import ConfirmPreviewModal from "../component/ConfirmPreviewModal";
 import { SECTION_ORDER, COLUMN_ORDER } from "../config/previewSections";
 
+import { useAuth } from "../auth/AuthContext";
 const API_BASE = "https://api.instantcheeseshao.com";
 
 export default function CreateVariants() {
+  const { accessToken } = useAuth();
   const {
     rows,
     currentRow,
@@ -76,7 +78,11 @@ export default function CreateVariants() {
       for (const s of chosen) {
         const resp = await fetch(s.endpoint, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+          },
           body: JSON.stringify({ rows: s.rows }),
         });
 

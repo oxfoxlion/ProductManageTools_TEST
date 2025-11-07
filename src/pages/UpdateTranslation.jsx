@@ -11,9 +11,11 @@ import ConfirmPreviewModal from "../component/ConfirmPreviewModal";
 import { SECTION_ORDER, COLUMN_ORDER } from "../config/previewSections";
 import { pick } from "../utils/pick";
 
+import { useAuth } from "../auth/AuthContext";
 const API_BASE = "https://api.instantcheeseshao.com";
 
 export default function UpdateTranslation() {
+  const { accessToken } = useAuth();
   const {
     rows, currentRow, selectedIndex, setIndex,
     translationPayloads, currentTranslationPayload
@@ -111,7 +113,11 @@ export default function UpdateTranslation() {
     for (const s of chosen) {
       const resp = await fetch(s.endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        },
         body: JSON.stringify({ rows: s.rows }),
       });
 
