@@ -85,6 +85,7 @@ export default function CreateProducts() {
 
       const resp = await fetch(`${API_BASE}/api/fullPipeline`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
