@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
-const API_BASE = "api.instantcheeseshao.com";
+const API_BASE = "https://api.instantcheeseshao.com";
 
 type User = { id: string; email: string; role?: string } | null;
 
