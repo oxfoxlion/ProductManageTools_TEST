@@ -15,9 +15,12 @@ import Hero from "../component/Hero";
 import ConfirmPreviewModal from "../component/ConfirmPreviewModal";
 import { SECTION_ORDER, COLUMN_ORDER } from "../config/previewSections";
 
+import { useAuth } from "../auth/AuthContext";
+
 const API_BASE = "https://api.instantcheeseshao.com";
 
 export default function CreateProducts() {
+  const { accessToken } = useAuth();
   const {
     rows, headers, currentRow, selectedIndex, setIndex,
     customMap, setCustomMap,
@@ -79,10 +82,13 @@ export default function CreateProducts() {
       // // ✅ 這邊 log，方便檢查
       // console.log("=== /api/fullPipeline ===");
       // console.log(JSON.stringify(payload, null, 2));
-      
+
       const resp = await fetch(`${API_BASE}/api/fullPipeline`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        },
         body: JSON.stringify({
           products: productPayloads || [],
           metafields: metafieldPayloads || [],
