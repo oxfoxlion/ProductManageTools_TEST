@@ -12,6 +12,8 @@ import ConfirmPreviewModal from "../component/ConfirmPreviewModal";
 import { SECTION_ORDER, COLUMN_ORDER } from "../config/previewSections";
 import { pick } from "../utils/pick";
 
+const API_BASE = "https://api.instantcheeseshao.com";
+
 export default function UpdateProducts() {
   const {
     rows,
@@ -51,7 +53,7 @@ export default function UpdateProducts() {
         id: "products",
         label: `Products (${productPayloads?.length || 0})`,
         rows: Array.isArray(productPayloads) ? productPayloads : [],
-        endpoint: "/api/productUpdater",
+        endpoint: `${API_BASE}/api/productUpdater`,
       },
     ]);
     setModalDefaultTab("products");
@@ -70,7 +72,7 @@ export default function UpdateProducts() {
         id: "products",
         label: `Products (1)`,
         rows: body,
-        endpoint: "/api/productUpdater",
+        endpoint: `${API_BASE}/api/productUpdater`,
       },
     ]);
     setModalDefaultTab("products");
@@ -88,7 +90,7 @@ export default function UpdateProducts() {
         id: "products",
         label: `Products (${body.length})`,
         rows: body,
-        endpoint: "/api/productUpdater",
+        endpoint: `${API_BASE}/api/productUpdater`,
       },
     ]);
     setModalDefaultTab("products");

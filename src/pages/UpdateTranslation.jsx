@@ -11,6 +11,8 @@ import ConfirmPreviewModal from "../component/ConfirmPreviewModal";
 import { SECTION_ORDER, COLUMN_ORDER } from "../config/previewSections";
 import { pick } from "../utils/pick";
 
+const API_BASE = "https://api.instantcheeseshao.com";
+
 export default function UpdateTranslation() {
   const {
     rows, currentRow, selectedIndex, setIndex,
@@ -46,7 +48,7 @@ export default function UpdateTranslation() {
         id: "translations",
         label: `Translations (${translationPayloads?.length || 0})`,
         rows: Array.isArray(translationPayloads) ? translationPayloads : [],
-        endpoint: "/api/translate",
+        endpoint: `${API_BASE}/api/translate`,
       },
     ]);
     setModalDefaultTab("translations");
@@ -65,7 +67,7 @@ export default function UpdateTranslation() {
         id: "translations",
         label: "Translations (1)",
         rows: body,
-        endpoint: "/api/translate",
+        endpoint: `${API_BASE}/api/translate`,
       },
     ]);
     setModalDefaultTab("translations");
@@ -83,7 +85,7 @@ export default function UpdateTranslation() {
         id: "translations",
         label: `Translations (${body.length})`,
         rows: body,
-        endpoint: "/api/translate",
+        endpoint: `${API_BASE}/api/translate`,
       },
     ]);
     setModalDefaultTab("translations");

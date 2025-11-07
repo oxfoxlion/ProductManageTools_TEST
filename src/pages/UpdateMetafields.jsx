@@ -15,6 +15,8 @@ import ConfirmPreviewModal from "../component/ConfirmPreviewModal";
 import { SECTION_ORDER, COLUMN_ORDER } from "../config/previewSections";
 import { pick } from "../utils/pick";
 
+const API_BASE = "https://api.instantcheeseshao.com";
+
 export default function UpdateMetafields() {
   const {
     rows, headers, currentRow, selectedIndex, setIndex,
@@ -51,7 +53,7 @@ export default function UpdateMetafields() {
         id: "metafields",
         label: `Metafields (${metafieldPayloads?.length || 0})`,
         rows: Array.isArray(metafieldPayloads) ? metafieldPayloads : [],
-        endpoint: "/api/metafieldsWriter",
+        endpoint: `${API_BASE}/api/metafieldsWriter`,
       },
     ]);
     setModalDefaultTab("metafields");
@@ -70,7 +72,7 @@ export default function UpdateMetafields() {
         id: "metafields",
         label: "Metafields (1)",
         rows: body,
-        endpoint: "/api/metafieldsWriter",
+        endpoint: `${API_BASE}/api/metafieldsWriter`,
       },
     ]);
     setModalDefaultTab("metafields");
@@ -88,7 +90,7 @@ export default function UpdateMetafields() {
         id: "metafields",
         label: `Metafields (${body.length})`,
         rows: body,
-        endpoint: "/api/metafieldsWriter",
+        endpoint: `${API_BASE}/api/metafieldsWriter`,
       },
     ]);
     setModalDefaultTab("metafields");

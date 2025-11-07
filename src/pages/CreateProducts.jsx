@@ -15,6 +15,8 @@ import Hero from "../component/Hero";
 import ConfirmPreviewModal from "../component/ConfirmPreviewModal";
 import { SECTION_ORDER, COLUMN_ORDER } from "../config/previewSections";
 
+const API_BASE = "https://api.instantcheeseshao.com";
+
 export default function CreateProducts() {
   const {
     rows, headers, currentRow, selectedIndex, setIndex,
@@ -78,7 +80,7 @@ export default function CreateProducts() {
       // console.log("=== /api/fullPipeline ===");
       // console.log(JSON.stringify(payload, null, 2));
       
-      const resp = await fetch("/api/fullPipeline", {
+      const resp = await fetch(`${API_BASE}/api/fullPipeline`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

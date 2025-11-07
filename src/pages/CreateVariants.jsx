@@ -8,6 +8,8 @@ import Hero from "../component/Hero";
 import ConfirmPreviewModal from "../component/ConfirmPreviewModal";
 import { SECTION_ORDER, COLUMN_ORDER } from "../config/previewSections";
 
+const API_BASE = "https://api.instantcheeseshao.com";
+
 export default function CreateVariants() {
   const {
     rows,
@@ -49,7 +51,7 @@ export default function CreateVariants() {
       id: "variants",
       label: `Variants (${rowsCount})`,
       rows: rowsToSend,
-      endpoint: "/api/productVariantsBuilder",
+      endpoint: `${API_BASE}/api/productVariantsBuilder`,
     },
   ]), [rowsCount, rowsToSend]);
 

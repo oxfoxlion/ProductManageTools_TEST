@@ -10,7 +10,6 @@ export default function DeleteTranslate() {
   const {
     // 原始資料與狀態
     rows,currentRow, selectedIndex, setIndex,
-    productPayloads
   } = useCsv();
 
 
