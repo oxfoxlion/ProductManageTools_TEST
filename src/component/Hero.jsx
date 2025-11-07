@@ -11,7 +11,7 @@ export default function Hero({ pageTitle, onSubmit }) {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{pageTitle}</h1>
-            <p className="mt-1 text-indigo-100">匯入 CSV，瀏覽並檢視每筆商品。</p>
+            <p className="mt-1 text-indigo-100">匯入 CSV，瀏覽並檢視每筆商品。<span className="font-bold text-yellow-200">(請篩選出要上架/修改的產品後再上傳)</span><br /></p>
           </div>
 
           <div className="flex items-center gap-3">

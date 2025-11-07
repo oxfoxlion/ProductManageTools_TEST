@@ -46,7 +46,7 @@ export default function UpdateTranslation() {
         id: "translations",
         label: `Translations (${translationPayloads?.length || 0})`,
         rows: Array.isArray(translationPayloads) ? translationPayloads : [],
-        endpoint: "/api/translate_ja",
+        endpoint: "/api/translate",
       },
     ]);
     setModalDefaultTab("translations");
@@ -65,7 +65,7 @@ export default function UpdateTranslation() {
         id: "translations",
         label: "Translations (1)",
         rows: body,
-        endpoint: "/api/translate_ja",
+        endpoint: "/api/translate",
       },
     ]);
     setModalDefaultTab("translations");
@@ -83,7 +83,7 @@ export default function UpdateTranslation() {
         id: "translations",
         label: `Translations (${body.length})`,
         rows: body,
-        endpoint: "/api/translate_ja",
+        endpoint: "/api/translate",
       },
     ]);
     setModalDefaultTab("translations");
@@ -92,43 +92,44 @@ export default function UpdateTranslation() {
 
   /* ============ Modal 確認送出：依當前 modalSections 送出 ============ */
   const handleConfirmSend = async (selectedIds /* string[] */) => {
-    const chosen = modalSections.filter(
-      (s) => selectedIds.includes(s.id) && Array.isArray(s.rows) && s.rows.length
-    );
-    if (!chosen.length) {
-      alert("目前沒有可送出的翻譯資料。");
-      setShowPreview(false);
-      return;
+  const chosen = (modalSections || []).filter(
+    (s) => selectedIds.includes(s.id) && Array.isArray(s.rows) && s.rows.length
+  );
+
+  if (!chosen.length) {
+    alert("目前沒有可送出的翻譯資料。");
+    setShowPreview(false);
+    return;
+  }
+
+  let anySuccess = false;
+
+  try {
+    // 逐一送出（若未來有多分頁，也只彈一次提示）
+    for (const s of chosen) {
+      const resp = await fetch(s.endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows: s.rows }),
+      });
+
+      if (resp.ok) { // 等同 2xx（包含 200/202）
+        anySuccess = true;
+      }
     }
 
-    // for (const s of chosen) {
-    //   try {
-    //     const resp = await fetch(s.endpoint, {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify({ rows: s.rows }),
-    //     });
-    //     const data = await resp.json().catch(() => ({}));
-    //     const ok = !!(resp.ok && (data.ok ?? true));
-    //     if (!ok) {
-    //       const failed = data.summaries?.filter((x) => !x.ok).length;
-    //       if (typeof failed === "number") {
-    //         alert(`【translations】部分失敗：${failed} 個 handle`);
-    //       } else {
-    //         alert("【translations】送出失敗");
-    //       }
-    //     } else {
-    //       const handled = data.summaries?.length ?? s.rows.length;
-    //       alert(`【translations】完成：${handled} 個 handle`);
-    //     }
-    //   } catch (err) {
-    //     console.error(err);
-    //     alert("送出失敗，請稍後再試或查看主控台錯誤訊息。");
-    //   }
-    // }
-    alert('資料送出功能尚未開放');
+    if (anySuccess) {
+      alert("資料已送出，您可關閉視窗。");
+    } else {
+      alert("送出失敗，請稍後再試。");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("送出失敗，請稍後再試或查看主控台錯誤訊息。");
+  } finally {
     setShowPreview(false);
-  };
+  }
+};
 
   return (
     <>

@@ -69,7 +69,7 @@ export default function Variants() {
   return (
     <div className="rounded-2xl border border-gray-300 bg-white p-6 shadow-sm">
       <div className="space-y-5">
-        <h3 className="text-sm font-semibold text-slate-700">變體</h3>
+        <h3 className="text-sm font-semibold text-slate-700">變體<span className="text-red-600">(請依產品類別選取對應的變體模組)</span></h3>
 
         <label htmlFor="variantMode">類別</label>
         <select

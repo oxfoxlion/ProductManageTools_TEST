@@ -97,43 +97,44 @@ export default function UpdateProducts() {
 
   // ▶ Modal 的「確認送出」：把目前 modalSections 的資料送到對應 endpoint
   const handleConfirmSend = async (selectedIds /* string[] */) => {
-    const chosen = modalSections.filter(
-      (s) => selectedIds.includes(s.id) && Array.isArray(s.rows) && s.rows.length
-    );
-    if (!chosen.length) {
-      alert("目前沒有可送出的產品資料。");
-      setShowPreview(false);
-      return;
+  const chosen = (modalSections || []).filter(
+    (s) => selectedIds.includes(s.id) && Array.isArray(s.rows) && s.rows.length
+  );
+
+  if (!chosen.length) {
+    alert("目前沒有可送出的翻譯資料。");
+    setShowPreview(false);
+    return;
+  }
+
+  let anySuccess = false;
+
+  try {
+    // 逐一送出（若未來有多分頁，也只彈一次提示）
+    for (const s of chosen) {
+      const resp = await fetch(s.endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows: s.rows }),
+      });
+
+      if (resp.ok) { // 等同 2xx（包含 200/202）
+        anySuccess = true;
+      }
     }
 
-    // for (const s of chosen) {
-    //   try {
-    //     const resp = await fetch(s.endpoint, {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify({ rows: s.rows }),
-    //     });
-    //     const data = await resp.json().catch(() => ({}));
-    //     const ok = !!(resp.ok && (data.ok ?? true));
-    //     if (!ok) {
-    //       const failed = data.summaries?.filter((x) => !x.ok).length;
-    //       if (typeof failed === "number") {
-    //         alert(`【products】部分失敗：${failed} 個 handle`);
-    //       } else {
-    //         alert("【products】送出失敗");
-    //       }
-    //     } else {
-    //       const handled = data.summaries?.length ?? s.rows.length;
-    //       alert(`【products】完成：${handled} 個 handle`);
-    //     }
-    //   } catch (err) {
-    //     console.error(err);
-    //     alert("送出失敗，請稍後再試或查看主控台錯誤訊息。");
-    //   }
-    // }
-    alert('資料送出功能尚未開放');
+    if (anySuccess) {
+      alert("資料已送出，您可關閉視窗。");
+    } else {
+      alert("送出失敗，請稍後再試。");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("送出失敗，請稍後再試或查看主控台錯誤訊息。");
+  } finally {
     setShowPreview(false);
-  };
+  }
+};
 
   return (
     <>

@@ -48,6 +48,9 @@ const BUILTIN_TEMPLATES = [
       { slot: "custom_38", header: "EMC" },
       { slot: "custom_39", header: "Application Field" },
       { slot: "custom_40", header: "Warranty" },
+      { slot: "custom_41", header: "Environmental Compliance" },
+      // 一律從最下方加新的，不然會跟其他產品位置不一樣
+      // 再到模板處去決定位置就好
     ],
   },
   {
@@ -172,7 +175,7 @@ export default function CustomFieldMapper({ headers = [], customMap = {}, setCus
   const [visibleCount, setVisibleCount] = useState(10);
   const STEP = 10;
   const MIN_VISIBLE = 10;
-  const MAX_SLOTS = 40;
+  const MAX_SLOTS = 60;
 
   useEffect(() => setUserTemplates(loadUserTemplates()), []);
 
@@ -205,7 +208,7 @@ export default function CustomFieldMapper({ headers = [], customMap = {}, setCus
     const name = window.prompt("請輸入這個模板的名稱：");
     if (!name) return;
     const entries = Object.entries(customMap || {})
-      .filter(([_, h]) => !!h)
+      .filter(([,h]) => !!h)
       .map(([slot, header]) => ({ slot, header }));
     const newT = { id: `${Date.now()}`, name, entries };
     const next = [...userTemplates, newT];

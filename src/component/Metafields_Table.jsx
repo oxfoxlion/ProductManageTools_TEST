@@ -3,7 +3,8 @@ import CardContent from "./CardContent";
 import CustomFieldMapper from "./CustomFieldMapper";
 
 export default function Metafields_Table({ currentRow, canEdit, customMap = {}, headers, setCustomMap, isChecked, toggleSelected }) {
-    const slots = Array.from({ length: 40 }, (_, i) => `custom_${i + 1}`);
+    // 自訂欄位組數
+    const slots = Array.from({ length: 60 }, (_, i) => `custom_${i + 1}`);
 
     const readMappedValue = (slot) => {
         const header = customMap?.[slot];
@@ -14,7 +15,7 @@ export default function Metafields_Table({ currentRow, canEdit, customMap = {}, 
     return (
         <div className="rounded-2xl border border-gray-300  bg-white p-6 shadow-sm">
             <div className="space-y-5">
-                <h3 className="text-sm font-semibold text-slate-700">規格</h3>
+                <h3 className="text-sm font-semibold text-slate-700">規格 <span className="text-red-600">(請依產品類別選取對應的規格模組或自訂模板)</span></h3>
                 <div className="grid grid-cols-1 gap-4">
                     <CustomFieldMapper customMap={customMap} headers={headers} setCustomMap={setCustomMap}></CustomFieldMapper>
                 </div>

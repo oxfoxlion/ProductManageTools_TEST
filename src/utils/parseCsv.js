@@ -12,7 +12,7 @@ import Papa from "papaparse";
 export function parseCsvFile(file, options = {}) {
   const defaultOptions = {
     header: true,
-    dynamicTyping: true,
+    dynamicTyping: false,
     skipEmptyLines: "greedy",
     transformHeader: (h) => String(h ?? "").trim(),
   };

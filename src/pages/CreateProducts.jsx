@@ -64,46 +64,43 @@ export default function CreateProducts() {
   const sourceLabel = useMemo(() => variantLabel || variantMode, [variantLabel, variantMode]);
 
   // 一次送出所有（可見）分頁
-  const handleConfirmSend = async (selectedIds /* string[] */) => {
-    const chosen = sections.filter(s => selectedIds.includes(s.id) && Array.isArray(s.rows) && s.rows.length);
-    if (!chosen.length) {
-      alert("目前沒有可送出的資料。");
+  const handleConfirmSend = async () => {
+    try {
+      // 這段拿來取得用postman測試的資料
+      // const payload = {
+      //   products: productPayloads || [],
+      //   metafields: metafieldPayloads || [],
+      //   translations: translationPayloads || [],
+      //   variants: Array.isArray(variantsActive) ? variantsActive : [],
+      // };
+
+      // // ✅ 這邊 log，方便檢查
+      // console.log("=== /api/fullPipeline ===");
+      // console.log(JSON.stringify(payload, null, 2));
+      
+      const resp = await fetch("/api/fullPipeline", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          products: productPayloads || [],
+          metafields: metafieldPayloads || [],
+          translations: translationPayloads || [],
+          variants: Array.isArray(variantsActive) ? variantsActive : [],
+        }),
+      });
+
+      const data = await resp.json().catch(() => ({}));
+      if (resp.ok) {
+        alert(data.message || "整批建立流程已啟動，請稍後查看官網後台是否建立成功，並請記得到 notion 修改 status 狀態與官網同步唷。");
+      } else {
+        alert(`送出失敗：${data.message || "未知錯誤"}`);
+      }
+    } catch (e) {
+      console.error("fullPipeline error:", e);
+      alert(`送出失敗：${e.message}`);
+    } finally {
       setShowPreview(false);
-      return;
     }
-
-    // const results = [];
-    // for (const s of chosen) {
-    //   try {
-    //     const resp = await fetch(s.endpoint, {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify({ rows: s.rows }),
-    //     });
-    //     const data = await resp.json().catch(() => ({}));
-    //     const ok = !!(resp.ok && (data.ok ?? true));
-    //     results.push({ id: s.id, ok, detail: data });
-
-    //     if (!ok) {
-    //       const failed = data.summaries?.filter((x) => !x.ok).length;
-    //       if (typeof failed === "number") {
-    //         alert(`【${s.id}】部分失敗：${failed} 項`);
-    //       } else {
-    //         alert(`【${s.id}】送出失敗`);
-    //       }
-    //     } else {
-    //       const handled = data.summaries?.length ?? s.rows.length;
-    //       alert(`【${s.id}】完成：${handled} 項`);
-    //     }
-    //   } catch (e) {
-    //     console.error(`[${s.id}] error:`, e);
-    //     results.push({ id: s.id, ok: false, detail: { message: e.message } });
-    //     alert(`【${s.id}】送出失敗：${e.message}`);
-    //   }
-    // }
-    alert('資料送出功能尚未開放');
-    setShowPreview(false);
-    // console.log("送出結果：", results);
   };
 
   // 勾選欄位（保留原樣）

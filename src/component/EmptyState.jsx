@@ -10,7 +10,8 @@ export default function EmptyState() {
         </div>
         <h3 className="text-lg font-semibold text-slate-800">尚未載入資料</h3>
         <p className="max-w-md text-sm text-slate-500">
-          請先上傳一份 <span className="font-medium text-slate-700">由 Notion 導出</span> 的 CSV 檔，
+          請先上傳一份 <span className="font-bold text-slate-700">由 Notion 導出</span> 的 CSV 檔 <br></br>
+          <span className="font-bold text-red-600">(請篩選出要上架/修改的產品後再上傳)</span><br />
           之後可在左側清單選取各項目進行檢視。
         </p>
 

@@ -34,8 +34,8 @@ export default function CreateVariants() {
   const handleCategoryChange = (nextLabelOrId) => {
     const list = variantCatalog || [];
     const byLabel = list.find(x => x.label === nextLabelOrId);
-    const byId    = list.find(x => x.id === nextLabelOrId);
-    const target  = byLabel || byId;
+    const byId = list.find(x => x.id === nextLabelOrId);
+    const target = byLabel || byId;
     if (target) setVariantMode(target.id);
   };
 
@@ -57,41 +57,43 @@ export default function CreateVariants() {
 
   // Modal 確認送出：一次送出所有可見分頁（此頁只有 variants）
   const handleConfirmSend = async (selectedIds /* string[] */) => {
-    const chosen = sections.filter(s => selectedIds.includes(s.id) && s.rows?.length);
+    const chosen = (sections || []).filter(
+      (s) => selectedIds.includes(s.id) && Array.isArray(s.rows) && s.rows.length
+    );
+
     if (!chosen.length) {
       alert("目前沒有可送出的變體資料。");
       setShowPreview(false);
       return;
     }
 
-    // for (const s of chosen) {
-    //   try {
-    //     const resp = await fetch(s.endpoint, {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify({ rows: s.rows }),
-    //     });
-    //     const data = await resp.json().catch(() => ({}));
-    //     const ok = !!(resp.ok && (data.ok ?? true));
-    //     if (!ok) {
-    //       const failed = data.summaries?.filter((x) => !x.ok).length;
-    //       if (typeof failed === "number") {
-    //         alert(`【${variantMode}】部分失敗：${failed} 個 handle`);
-    //       } else {
-    //         alert(`【${variantMode}】送出失敗`);
-    //       }
-    //     } else {
-    //       const handled = data.summaries?.length ?? s.rows.length;
-    //       alert(`【${variantMode}】完成：${handled} 個 handle`);
-    //     }
-    //   } catch (err) {
-    //     console.error(err);
-    //     alert("送單失敗，請稍後再試或查看主控台錯誤訊息。");
-    //   }
-    // }
+    let anySuccess = false;
 
-    alert('資料送出功能尚未開放');
-    setShowPreview(false);
+    try {
+      // 逐一依分頁送出（此頁目前只有 variants）
+      for (const s of chosen) {
+        const resp = await fetch(s.endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rows: s.rows }),
+        });
+
+        if (resp.ok) { // 視為 2xx（200/202 等）
+          anySuccess = true;
+        }
+      }
+
+      if (anySuccess) {
+        alert("資料已送出，您可關閉視窗。");
+      } else {
+        alert("送出失敗，請稍後再試。");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("送出失敗，請稍後再試或查看主控台錯誤訊息。");
+    } finally {
+      setShowPreview(false);
+    }
   };
 
   // 勾選邏輯（提供給 RequireColumn/Variants）
